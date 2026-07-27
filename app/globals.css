@@ -3,11 +3,13 @@
 :root {
   --primary: #393E41;
   --secondary: #F6F7EB;
+  --error: #D64045
 }
 
 @theme inline {
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
+  --color-error: var(--error);
   --font-eb-garamond: var(--font-eb-garamond);
   --font-be-vietnam-pro: var(--font-be-vietnam-pro);
 }
@@ -23,4 +25,22 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (max-width: 767px) {
+  .discussion-sticky {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: clamp(3.5rem, 10vh, 5.5rem);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .discussion-heading {
+    max-width: 22rem;
+    margin-bottom: 1.5rem;
+    font-size: clamp(2rem, 8vw, 2.75rem);
+    line-height: 1.1;
+  }
 }
