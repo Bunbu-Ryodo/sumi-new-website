@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #393E41;
+  --secondary: #F6F7EB;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --font-eb-garamond: var(--font-eb-garamond);
+  --font-be-vietnam-pro: var(--font-be-vietnam-pro);
 }
 
 @media (prefers-color-scheme: dark) {
