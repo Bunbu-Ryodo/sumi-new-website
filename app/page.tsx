@@ -12,6 +12,10 @@ export default function Home() {
   const listViewportRef = useRef<HTMLDivElement>(null);
   const discussionSectionRef = useRef<HTMLDivElement>(null);
   const discussionCardRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const discussionCardShellRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const discussionBuzzedRef = useRef<boolean[]>(
+    Array.from({ length: DISCUSSION_CARD_COUNT }, () => false),
+  );
 
   useEffect(() => {
     const onScroll = () => {
@@ -54,6 +58,22 @@ export default function Home() {
 
         card.style.opacity = String(eased);
         card.style.transform = `translateY(${y}px)`;
+
+        const shell = discussionCardShellRefs.current[index];
+        if (!shell) return;
+
+        if (eased >= 0.995 && !discussionBuzzedRef.current[index]) {
+          discussionBuzzedRef.current[index] = true;
+          shell.classList.remove("card-buzz");
+          // Force restart so each reveal can replay the buzz animation.
+          void shell.offsetWidth;
+          shell.classList.add("card-buzz");
+        }
+
+        if (eased < 0.98 && discussionBuzzedRef.current[index]) {
+          discussionBuzzedRef.current[index] = false;
+          shell.classList.remove("card-buzz");
+        }
       });
     };
 
@@ -124,70 +144,84 @@ export default function Home() {
                 ref={(el) => {
                   discussionCardRefs.current[0] = el;
                 }}
-                className="flex flex-col bg-primary rounded w-full max-w-md h-auto mb-4 will-change-transform"
+                className="w-full max-w-md mb-4 will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
-                <div className="flex flex-row items-center">
-                  <div className="h-12 w-12 bg-secondary rounded-full m-4" />
-                  <p className="font-be-vietnam-pro mr-4">Shouty Person</p>
-                  <p className="font-be-vietnam-pro mr-4">@Shouty</p>
-                  <p className="font-be-vietnam-pro">1h</p>
+                <div
+                  ref={(el) => {
+                    discussionCardShellRefs.current[0] = el;
+                  }}
+                  className="discussion-card-shell flex flex-col bg-primary rounded h-auto"
+                >
+                  <div className="flex flex-row items-center">
+                    <div className="h-12 w-12 bg-secondary rounded-full m-4" />
+                    <p className="font-be-vietnam-pro mr-4">Shouty Person</p>
+                    <p className="font-be-vietnam-pro mr-4">@Shouty</p>
+                    <p className="font-be-vietnam-pro">1h</p>
+                  </div>
+                  <p className="font-be-vietnam-pro m-4">
+                    It was the best of times... it was the blurst of times!? You
+                    stupid monkey! The quick brown fox jumps lazily over the dog
+                    after lorem ipsum dolor sit amet Caecilius est pater Metella
+                    est mater Cereberus est canis. Everyone has the right to
+                    remain silent! What you say will be used against you because
+                    Santa Claus is coming to town.
+                  </p>
                 </div>
-                <p className="font-be-vietnam-pro m-4">
-                  It was the best of times... it was the blurst of times!? You
-                  stupid monkey! The quick brown fox jumps lazily over the dog
-                  after lorem ipsum dolor sit amet Caecilius est pater Metella
-                  est mater Cereberus est canis. Everyone has the right to
-                  remain silent! What you say will be used against you because
-                  Santa Claus is coming to town.
-                </p>
               </div>
 
               <div
                 ref={(el) => {
                   discussionCardRefs.current[1] = el;
                 }}
-                className="flex flex-col bg-secondary border border-primary rounded w-full max-w-md h-auto mb-4 will-change-transform"
+                className="w-full max-w-md mb-4 will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
-                <div className="flex flex-col">
-                  <div className="flex flex-row items-center">
-                    <div className="h-8 w-8 bg-primary rounded-full m-4" />
-                    <p className="font-be-vietnam-pro mr-4 text-primary">
-                      shouty1337
+                <div
+                  ref={(el) => {
+                    discussionCardShellRefs.current[1] = el;
+                  }}
+                  className="discussion-card-shell flex flex-col bg-secondary border border-primary rounded h-auto"
+                >
+                  <div className="flex flex-col">
+                    <div className="flex flex-row items-center">
+                      <div className="h-8 w-8 bg-primary rounded-full m-4" />
+                      <p className="font-be-vietnam-pro mr-4 text-primary">
+                        shouty1337
+                      </p>
+                      <p className="font-be-vietnam-pro text-primary">29m</p>
+                    </div>
+                    <p className="font-be-vietnam-pro ml-12 text-primary">
+                      Have at you sir!
                     </p>
-                    <p className="font-be-vietnam-pro text-primary">29m</p>
+                    <p className="font-be-vietnam-pro ml-12 text-error">-300</p>
                   </div>
-                  <p className="font-be-vietnam-pro ml-12 text-primary">
-                    Have at you sir!
-                  </p>
-                  <p className="font-be-vietnam-pro ml-12 text-error">-300</p>
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex flex-row items-center">
-                    <div className="h-8 w-8 bg-primary rounded-full m-4" />
-                    <p className="font-be-vietnam-pro mr-4 text-primary">
-                      Knave
+                  <div className="flex flex-col">
+                    <div className="flex flex-row items-center">
+                      <div className="h-8 w-8 bg-primary rounded-full m-4" />
+                      <p className="font-be-vietnam-pro mr-4 text-primary">
+                        Knave
+                      </p>
+                      <p className="font-be-vietnam-pro text-primary">15m</p>
+                    </div>
+                    <p className="font-be-vietnam-pro ml-12 text-primary">
+                      Avaunt! Blackguard! I say, avaunt!
                     </p>
-                    <p className="font-be-vietnam-pro text-primary">15m</p>
+                    <p className="font-be-vietnam-pro ml-12 text-error">-25</p>
                   </div>
-                  <p className="font-be-vietnam-pro ml-12 text-primary">
-                    Avaunt! Blackguard! I say, avaunt!
-                  </p>
-                  <p className="font-be-vietnam-pro ml-12 text-error">-25</p>
-                </div>
-                <div className="flex flex-col">
-                  <div className="flex flex-row items-center">
-                    <div className="h-8 w-8 bg-primary rounded-full m-4" />
-                    <p className="font-be-vietnam-pro mr-4 text-primary">
-                      Pistol
+                  <div className="flex flex-col">
+                    <div className="flex flex-row items-center">
+                      <div className="h-8 w-8 bg-primary rounded-full m-4" />
+                      <p className="font-be-vietnam-pro mr-4 text-primary">
+                        Pistol
+                      </p>
+                      <p className="font-be-vietnam-pro text-primary">2m</p>
+                    </div>
+                    <p className="font-be-vietnam-pro ml-12 text-primary">
+                      A fig for thee, then!
                     </p>
-                    <p className="font-be-vietnam-pro text-primary">2m</p>
+                    <p className="font-be-vietnam-pro ml-12 text-error">-49</p>
                   </div>
-                  <p className="font-be-vietnam-pro ml-12 text-primary">
-                    A fig for thee, then!
-                  </p>
-                  <p className="font-be-vietnam-pro ml-12 text-error">-49</p>
                 </div>
               </div>
 
@@ -195,12 +229,20 @@ export default function Home() {
                 ref={(el) => {
                   discussionCardRefs.current[2] = el;
                 }}
-                className="flex flex-col justify-center items-center bg-primary rounded w-full max-w-md h-96 will-change-transform"
+                className="w-full max-w-md will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
-                <p className="font-be-vietnam-pro text-primary text-2xl text-secondary">
-                  Curtains for Zoosha!?
-                </p>
+                <div
+                  ref={(el) => {
+                    discussionCardShellRefs.current[2] = el;
+                  }}
+                  className="discussion-card-shell flex flex-col justify-center items-center bg-primary rounded h-96 p-8"
+                >
+                  <p className="font-be-vietnam-pro text-primary text-2xl text-secondary text-center">
+                    Curtains for Zoosha!? K-dog and batboy jestermaxxing, caught
+                    flipping a grunt, in police custody.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
