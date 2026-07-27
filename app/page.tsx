@@ -5,14 +5,28 @@ import { useEffect, useRef } from "react";
 
 const ITEMS = ["/feed2.jpeg", "/feed3.jpeg", "/feed4.jpeg"];
 const DISCUSSION_CARD_COUNT = 3;
+const APP_USE_IMAGES = [
+  "/appuse1.jpeg",
+  "/appuse2.jpeg",
+  "/appuse3.jpeg",
+  "/appuse4.jpeg",
+  "/appuse5.jpeg",
+  "/appuse6.jpeg",
+  "/appuse7.jpeg",
+  "/appuse8.jpeg",
+  "/appuse9.jpeg",
+];
+const APP_USE_HOLD_RATIO = 0.72;
 
 export default function Home() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const listViewportRef = useRef<HTMLDivElement>(null);
   const discussionSectionRef = useRef<HTMLDivElement>(null);
+  const superpowerSectionRef = useRef<HTMLDivElement>(null);
   const discussionCardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const discussionCardShellRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const superpowerImageRefs = useRef<Array<HTMLDivElement | null>>([]);
   const discussionBuzzedRef = useRef<boolean[]>(
     Array.from({ length: DISCUSSION_CARD_COUNT }, () => false),
   );
@@ -75,6 +89,54 @@ export default function Home() {
           shell.classList.remove("card-buzz");
         }
       });
+
+      const superpowerSection = superpowerSectionRef.current;
+      if (!superpowerSection) return;
+
+      const { top: superpowerTop, height: superpowerHeight } =
+        superpowerSection.getBoundingClientRect();
+      const superpowerScrollable = superpowerHeight - window.innerHeight;
+      if (superpowerScrollable <= 0) return;
+
+      const superpowerProgress = Math.max(
+        0,
+        Math.min(1, -superpowerTop / superpowerScrollable),
+      );
+      const reveal = Math.min(1, superpowerProgress / 0.08);
+      const cappedFrame = Math.min(
+        APP_USE_IMAGES.length - 0.0001,
+        superpowerProgress * APP_USE_IMAGES.length,
+      );
+      const frameIndex = Math.floor(cappedFrame);
+      const frameProgress = cappedFrame - frameIndex;
+      const fadeProgress = Math.max(
+        0,
+        Math.min(
+          1,
+          (frameProgress - APP_USE_HOLD_RATIO) / (1 - APP_USE_HOLD_RATIO),
+        ),
+      );
+
+      superpowerImageRefs.current.forEach((imageFrame, index) => {
+        if (!imageFrame) return;
+
+        let opacity = 0;
+        if (index === frameIndex) {
+          opacity = 1 - fadeProgress;
+        }
+        if (index === frameIndex + 1) {
+          opacity = fadeProgress;
+        }
+        if (frameIndex === APP_USE_IMAGES.length - 1 && index === frameIndex) {
+          opacity = 1;
+        }
+
+        const finalOpacity = opacity * reveal;
+        const rise = (1 - finalOpacity) * 18;
+
+        imageFrame.style.opacity = String(finalOpacity);
+        imageFrame.style.transform = `translateY(${rise}px)`;
+      });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -94,10 +156,18 @@ export default function Home() {
         <div className="sticky top-0 h-screen flex flex-col md:flex-row w-full bg-primary overflow-hidden">
           {/* Left column — stays fixed while items scroll */}
           <div className="flex flex-col justify-center items-center text-center md:items-start md:text-left w-full md:w-1/2 h-1/3 md:h-full p-8 md:p-8">
-            <p className="font-eb-garamond text-6xl md:text-8xl mb-12">Sumi</p>
-            <p className="font-eb-garamond text-2xl md:text-3xl">
+            <p className="font-eb-garamond text-6xl md:text-8xl mb-8">Sumi</p>
+            <p className="font-eb-garamond text-2xl md:text-3xl mb-8">
               Your new feed, flooded with the Great Books
             </p>
+            <a href="https://apps.apple.com/gb/app/sumi-scroll-smarter/id6779934781">
+              <Image
+                src="/app-store.svg"
+                alt="App Store"
+                width={210}
+                height={70}
+              />
+            </a>
           </div>
 
           {/* Right column — items are driven by scroll progress */}
@@ -160,12 +230,10 @@ export default function Home() {
                     <p className="font-be-vietnam-pro">1h</p>
                   </div>
                   <p className="font-be-vietnam-pro m-4">
-                    It was the best of times... it was the blurst of times!? You
-                    stupid monkey! The quick brown fox jumps lazily over the dog
-                    after lorem ipsum dolor sit amet Caecilius est pater Metella
-                    est mater Cereberus est canis. Everyone has the right to
-                    remain silent! What you say will be used against you because
-                    Santa Claus is coming to town.
+                    It was the best of times, it was the blurst of times!? You
+                    stupid monkey. The quick fox jumped over the lazy dog but
+                    what was the fox doing outside during daylight hours? Birds
+                    aren't real and neither are all of you.
                   </p>
                 </div>
               </div>
@@ -240,10 +308,60 @@ export default function Home() {
                 >
                   <p className="font-be-vietnam-pro text-primary text-2xl text-secondary text-center">
                     Curtains for Zoosha!? K-dog and batboy jestermaxxing, caught
-                    flipping a grunt, in police custody.
+                    flipping a grunt, in police custody, bail set at $5000.
                   </p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        ref={superpowerSectionRef}
+        style={{ height: `calc(100vh * ${APP_USE_IMAGES.length + 1})` }}
+      >
+        <div className="sticky top-0 h-screen bg-primary p-6 md:p-10 overflow-hidden">
+          <div className="w-full h-full max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-10">
+            <div className="w-full md:w-1/3 order-1 md:order-2 flex flex-col justify-center text-secondary">
+              <p className="font-eb-garamond text-4xl md:text-6xl mb-4 md:mb-6 text-center md:text-left">
+                Your phone addiction is now your superpower
+              </p>
+              <p className="font-be-vietnam-pro text-base md:text-lg text-center md:text-left opacity-90 mb-2">
+                Meet Sumi. Serving up serialized classics of literature in an
+                enticing social media format. Trick yourself into becoming a
+                voracious reader. Get instalments delivered every day, every few
+                days, every week, bi-weekly. Make the most of your micro-breaks
+                with some guilt-free scrolling. Read actively by annotating your
+                extracts. Use AI-powered reading aids to boost comprehension and
+                get the most out of your reading.
+              </p>
+            </div>
+
+            <div className="w-full md:w-2/3 order-2 md:order-1 relative h-[56vh] md:h-full">
+              {APP_USE_IMAGES.map((imageSrc, i) => (
+                <div
+                  key={imageSrc}
+                  ref={(el) => {
+                    superpowerImageRefs.current[i] = el;
+                  }}
+                  className="absolute inset-0 will-change-transform"
+                  style={{
+                    opacity: i === 0 ? 1 : 0,
+                    transform: "translateY(0)",
+                  }}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={imageSrc}
+                      alt={`Sumi app screenshot ${i + 1}`}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 66vw"
+                      priority={i < 2}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
