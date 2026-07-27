@@ -132,10 +132,8 @@ export default function Home() {
         }
 
         const finalOpacity = opacity * reveal;
-        const rise = (1 - finalOpacity) * 18;
 
         imageFrame.style.opacity = String(finalOpacity);
-        imageFrame.style.transform = `translateY(${rise}px)`;
       });
     };
 
@@ -230,10 +228,9 @@ export default function Home() {
                     <p className="font-be-vietnam-pro">1h</p>
                   </div>
                   <p className="font-be-vietnam-pro m-4">
-                    It was the best of times, it was the blurst of times!? You
-                    stupid monkey. The quick fox jumped over the lazy dog but
-                    what was the fox doing outside during daylight hours? Birds
-                    aren't real and neither are all of you.
+                    As a young boy I dreamed of being a baseball. But tonight I
+                    say we must move forward not backward. Upward, not forward.
+                    And always twirling, twirling, twirling towards freedom.
                   </p>
                 </div>
               </div>
