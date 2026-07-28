@@ -404,9 +404,10 @@ export default function Home() {
                   className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
-                  Serving up serialized classics of literature in an enticing
-                  social media format. Trick yourself into becoming a voracious
-                  reader.
+                  Sumi presents you with a feed to scroll infinitely like your
+                  other social media apps. But instead of "content" you might
+                  discover your next read. Pull down to refresh your feed, swipe
+                  right to reject an extract, swipe left or tap to read more.
                 </p>
                 <p
                   ref={(el) => {
@@ -416,7 +417,8 @@ export default function Home() {
                   style={{ opacity: 0 }}
                 >
                   Thousands of chapters on launch, with more added all the time.
-                  Never run out of content.
+                  Henry James, Joseph Conrad, George Eliot, Dostoevsky, Tolstoy,
+                  Stendahl and Balzac...
                 </p>
                 <p
                   ref={(el) => {
