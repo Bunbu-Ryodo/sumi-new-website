@@ -63,6 +63,8 @@ export default function Home() {
         Math.min(1, -discussionTop / discussionScrollable),
       );
 
+      const isMobile = window.innerWidth < 768;
+
       discussionCardRefs.current.forEach((card, index) => {
         if (!card) return;
 
@@ -71,15 +73,49 @@ export default function Home() {
           Math.min(1, discussionProgress * DISCUSSION_CARD_COUNT - index),
         );
         const eased = localProgress * localProgress * (3 - 2 * localProgress);
-        const y = (1 - eased) * 60;
+        let opacity = eased;
+        let y = (1 - eased) * 60;
 
-        card.style.opacity = String(eased);
+        if (isMobile) {
+          const segmentProgress = Math.max(
+            0,
+            Math.min(1, (discussionProgress - index / DISCUSSION_CARD_COUNT) / (1 / DISCUSSION_CARD_COUNT)),
+          );
+          const enterProgress = Math.max(
+            0,
+            Math.min(1, segmentProgress / 0.35),
+          );
+          const enterEased = enterProgress * enterProgress * (3 - 2 * enterProgress);
+          const exitProgress = Math.max(
+            0,
+            Math.min(1, (segmentProgress - 0.6) / 0.4),
+          );
+          const exitEased = exitProgress * exitProgress * (3 - 2 * exitProgress);
+
+          if (segmentProgress < 0.35) {
+            opacity = enterEased;
+            y = 0;
+          } else if (segmentProgress > 0.8) {
+            opacity = 1 - exitEased;
+            y = 0;
+          } else {
+            opacity = 1;
+            y = 0;
+          }
+        }
+
+        card.style.opacity = String(opacity);
         card.style.transform = `translateY(${y}px)`;
+        card.style.zIndex = String(index + 1);
 
         const shell = discussionCardShellRefs.current[index];
         if (!shell) return;
 
-        if (eased >= 0.995 && !discussionBuzzedRef.current[index]) {
+        const shouldBuzz = isMobile
+          ? opacity > 0.95 && !discussionBuzzedRef.current[index]
+          : eased >= 0.995 && !discussionBuzzedRef.current[index];
+
+        if (shouldBuzz) {
           discussionBuzzedRef.current[index] = true;
           shell.classList.remove("card-buzz");
           // Force restart so each reveal can replay the buzz animation.
@@ -87,7 +123,11 @@ export default function Home() {
           shell.classList.add("card-buzz");
         }
 
-        if (eased < 0.98 && discussionBuzzedRef.current[index]) {
+        const shouldStopBuzzing = isMobile
+          ? opacity < 0.95 && discussionBuzzedRef.current[index]
+          : eased < 0.98 && discussionBuzzedRef.current[index];
+
+        if (shouldStopBuzzing) {
           discussionBuzzedRef.current[index] = false;
           shell.classList.remove("card-buzz");
         }
@@ -223,19 +263,19 @@ export default function Home() {
         ref={discussionSectionRef}
         style={{ height: `calc(100vh * ${DISCUSSION_CARD_COUNT + 1})` }}
       >
-        <div className="discussion-sticky sticky top-0 h-screen bg-secondary flex w-full items-start md:items-center justify-center p-4 md:p-8 overflow-y-auto md:overflow-hidden">
+        <div className="discussion-sticky sticky top-0 h-screen bg-secondary flex w-full items-start md:items-center justify-center p-3 md:p-8 overflow-hidden">
           <div className="w-full max-w-7xl flex flex-col items-center">
-            <p className="discussion-heading font-eb-garamond mb-3 md:mb-8 text-2xl md:text-6xl text-center text-primary">
+            <p className="discussion-heading font-eb-garamond mb-2 md:mb-8 text-xl sm:text-2xl md:text-6xl text-center text-primary">
               How many novels worth of inane and vacuous text have you
               doom-scrolled this week?
             </p>
 
-            <div className="w-full flex flex-col md:flex-row items-center md:items-start justify-center gap-3 md:gap-8">
+            <div className="relative w-full min-h-[20rem] sm:min-h-[22rem] md:min-h-0 flex flex-col md:flex-row items-center md:items-start justify-center gap-2 md:gap-8">
               <div
                 ref={(el) => {
                   discussionCardRefs.current[0] = el;
                 }}
-                className="w-full max-w-md mb-2 md:mb-4 will-change-transform"
+                className="absolute inset-x-0 top-0 w-full max-w-md mb-1 md:mb-4 md:static will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
                 <div
@@ -262,7 +302,7 @@ export default function Home() {
                 ref={(el) => {
                   discussionCardRefs.current[1] = el;
                 }}
-                className="w-full max-w-md mb-2 md:mb-4 will-change-transform"
+                className="absolute inset-x-0 top-0 w-full max-w-md mb-1 md:mb-4 md:static will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
                 <div
@@ -317,7 +357,7 @@ export default function Home() {
                 ref={(el) => {
                   discussionCardRefs.current[2] = el;
                 }}
-                className="w-full max-w-md will-change-transform"
+                className="absolute inset-x-0 top-0 w-full max-w-md md:static will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
                 <div
@@ -326,7 +366,7 @@ export default function Home() {
                   }}
                   className="discussion-card-shell flex flex-col justify-center items-center bg-primary rounded h-auto min-h-[6rem] md:h-96 p-4 md:p-8"
                 >
-                  <p className="font-be-vietnam-pro text-primary text-lg md:text-2xl text-secondary text-center">
+                  <p className="font-be-vietnam-pro text-primary text-sm sm:text-base md:text-2xl text-secondary text-center">
                     Curtains for Zoosha!? K-dog and batboy jestermaxxing, caught
                     flipping a grunt, in police custody, bail set at $5000.
                   </p>
