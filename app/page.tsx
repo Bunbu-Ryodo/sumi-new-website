@@ -63,7 +63,7 @@ export default function Home() {
         Math.min(1, -discussionTop / discussionScrollable),
       );
 
-      const isMobile = window.innerWidth < 768;
+      const isMobile = window.innerWidth < 1024;
 
       discussionCardRefs.current.forEach((card, index) => {
         if (!card) return;
@@ -79,23 +79,32 @@ export default function Home() {
         if (isMobile) {
           const segmentProgress = Math.max(
             0,
-            Math.min(1, (discussionProgress - index / DISCUSSION_CARD_COUNT) / (1 / DISCUSSION_CARD_COUNT)),
+            Math.min(
+              1,
+              (discussionProgress - index / DISCUSSION_CARD_COUNT) /
+                (1 / DISCUSSION_CARD_COUNT),
+            ),
           );
           const enterProgress = Math.max(
             0,
             Math.min(1, segmentProgress / 0.35),
           );
-          const enterEased = enterProgress * enterProgress * (3 - 2 * enterProgress);
+          const enterEased =
+            enterProgress * enterProgress * (3 - 2 * enterProgress);
           const exitProgress = Math.max(
             0,
             Math.min(1, (segmentProgress - 0.6) / 0.4),
           );
-          const exitEased = exitProgress * exitProgress * (3 - 2 * exitProgress);
+          const exitEased =
+            exitProgress * exitProgress * (3 - 2 * exitProgress);
 
           if (segmentProgress < 0.35) {
             opacity = enterEased;
             y = 0;
-          } else if (segmentProgress > 0.8) {
+          } else if (
+            segmentProgress > 0.8 &&
+            index < DISCUSSION_CARD_COUNT - 1
+          ) {
             opacity = 1 - exitEased;
             y = 0;
           } else {
@@ -213,20 +222,19 @@ export default function Home() {
     <div className="flex flex-col flex-1">
       {/* Parallax section — tall enough that one full-screen scroll = one item */}
       <div ref={sectionRef} style={{ height: `calc(100vh * ${ITEMS.length})` }}>
-        <div className="sticky top-0 h-screen flex flex-col md:flex-row w-full bg-primary overflow-hidden">
+        <div className="sticky top-0 h-screen flex flex-col lg:flex-row w-full bg-primary overflow-hidden">
           {/* Left column — stays fixed while items scroll */}
-          <div className="flex flex-col justify-center items-center text-center md:items-start md:text-left w-full md:w-1/2 h-1/3 md:h-full p-8 md:p-8">
-            <p className="font-eb-garamond text-6xl md:text-8xl mb-8">Sumi</p>
-            <p className="font-be-vietnam-pro text-2xl md:text-3xl mb-8">
+          <div className="flex flex-col justify-center items-center text-center lg:items-start lg:text-left w-full lg:w-1/2 h-1/3 lg:h-full p-8">
+            <p className="font-eb-garamond text-6xl lg:text-8xl mb-4">Sumi</p>
+            <p className="font-be-vietnam-pro text-2xl lg:text-3xl mb-4">
               Your new feed, flooded with the Great Books
             </p>
             <a href="https://apps.apple.com/gb/app/sumi-scroll-smarter/id6779934781">
               <Image
                 src="/app-store.svg"
                 alt="App Store"
-                width={210}
-                height={70}
-                className="w-[170px] h-auto md:w-[210px]"
+                width={150}
+                height={50}
               />
             </a>
           </div>
@@ -234,13 +242,13 @@ export default function Home() {
           {/* Right column — items are driven by scroll progress */}
           <div
             ref={listViewportRef}
-            className="relative w-full md:w-1/2 h-2/3 md:h-full overflow-hidden"
+            className="relative w-full lg:w-1/2 h-2/3 lg:h-full overflow-hidden"
           >
             <div ref={trackRef} className="flex flex-col will-change-transform">
               {ITEMS.map((item, i) => (
                 <div
                   key={i}
-                  className="h-[66.666667vh] md:h-screen flex items-center justify-center"
+                  className="h-[66.666667vh] lg:h-screen flex items-center justify-center"
                 >
                   <div className="relative w-full h-full overflow-hidden bg-primary">
                     <Image
@@ -263,34 +271,36 @@ export default function Home() {
         ref={discussionSectionRef}
         style={{ height: `calc(100vh * ${DISCUSSION_CARD_COUNT + 1})` }}
       >
-        <div className="discussion-sticky sticky top-0 h-screen bg-secondary flex w-full items-start md:items-center justify-center p-3 md:p-8 overflow-hidden">
+        <div className="discussion-sticky sticky top-0 h-screen bg-secondary flex w-full items-center justify-center p-3 lg:p-8 overflow-hidden">
           <div className="w-full max-w-7xl flex flex-col items-center">
-            <p className="discussion-heading font-eb-garamond mb-2 md:mb-8 text-xl sm:text-2xl md:text-6xl text-center text-primary">
+            <p className="discussion-heading font-eb-garamond mb-2 lg:mb-8 sm:text-3xl md:text-4xl lg:text-6xl text-center text-primary mb-4">
               How many novels worth of inane and vacuous text have you
               doom-scrolled this week?
             </p>
 
-            <div className="relative w-full min-h-[20rem] sm:min-h-[22rem] md:min-h-0 flex flex-col md:flex-row items-center md:items-start justify-center gap-2 md:gap-8">
+            <div className="relative w-full min-h-[20rem] sm:min-h-[22rem] lg:min-h-0 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-2 lg:gap-8">
               <div
                 ref={(el) => {
                   discussionCardRefs.current[0] = el;
                 }}
-                className="absolute inset-x-0 top-0 w-full max-w-md mb-1 md:mb-4 md:static will-change-transform"
+                className="absolute inset-x-0 top-0 flex justify-center px-3 lg:px-0 w-full mb-1 lg:mb-4 lg:static will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
                 <div
                   ref={(el) => {
                     discussionCardShellRefs.current[0] = el;
                   }}
-                  className="discussion-card-shell flex flex-col bg-primary rounded h-auto"
+                  className="discussion-card-shell flex flex-col bg-primary rounded w-full max-w-md h-auto"
                 >
-                  <div className="flex flex-row items-center">
-                    <div className="h-12 w-12 bg-secondary rounded-full m-4" />
-                    <p className="font-be-vietnam-pro mr-4">VoteNow</p>
-                    <p className="font-be-vietnam-pro mr-4">@PlanetIsDoomed</p>
-                    <p className="font-be-vietnam-pro">1h</p>
+                  <div className="flex flex-row items-center p-4 gap-3">
+                    <div className="shrink-0 h-12 w-12 bg-secondary rounded-full" />
+                    <p className="font-be-vietnam-pro shrink-0">VoteNow</p>
+                    <p className="font-be-vietnam-pro truncate min-w-0">
+                      @PlanetIsDoomed
+                    </p>
+                    <p className="font-be-vietnam-pro shrink-0">1h</p>
                   </div>
-                  <p className="font-be-vietnam-pro m-4">
+                  <p className="font-be-vietnam-pro px-4 pb-4">
                     As a young boy I dreamed of being a baseball. But tonight I
                     say we must move forward not backward. Upward, not forward.
                     And always twirling, twirling, twirling towards freedom.
@@ -302,18 +312,18 @@ export default function Home() {
                 ref={(el) => {
                   discussionCardRefs.current[1] = el;
                 }}
-                className="absolute inset-x-0 top-0 w-full max-w-md mb-1 md:mb-4 md:static will-change-transform"
+                className="absolute inset-x-0 top-0 flex justify-center px-3 lg:px-0 w-full mb-1 lg:mb-4 lg:static will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
                 <div
                   ref={(el) => {
                     discussionCardShellRefs.current[1] = el;
                   }}
-                  className="discussion-card-shell flex flex-col bg-secondary border border-primary rounded h-auto p-2"
+                  className="discussion-card-shell flex flex-col bg-secondary w-full max-w-md border border-primary rounded h-auto p-2"
                 >
                   <div className="flex flex-col">
                     <div className="flex flex-row items-center">
-                      <div className="h-8 w-8 bg-primary rounded-full m-4" />
+                      <div className="shrink-0 h-8 w-8 bg-primary rounded-full m-4" />
                       <p className="font-be-vietnam-pro mr-4 text-primary">
                         Fluellen
                       </p>
@@ -326,7 +336,7 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col">
                     <div className="flex flex-row items-center">
-                      <div className="h-8 w-8 bg-primary rounded-full m-4" />
+                      <div className="shrink-0 h-8 w-8 bg-primary rounded-full m-4" />
                       <p className="font-be-vietnam-pro mr-4 text-primary">
                         Knave
                       </p>
@@ -339,7 +349,7 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col">
                     <div className="flex flex-row items-center">
-                      <div className="h-8 w-8 bg-primary rounded-full m-4" />
+                      <div className="shrink-0 h-8 w-8 bg-primary rounded-full m-4" />
                       <p className="font-be-vietnam-pro mr-4 text-primary">
                         Pistol
                       </p>
@@ -357,16 +367,16 @@ export default function Home() {
                 ref={(el) => {
                   discussionCardRefs.current[2] = el;
                 }}
-                className="absolute inset-x-0 top-0 w-full max-w-md md:static will-change-transform"
+                className="absolute inset-x-0 top-0 flex justify-center px-3 lg:px-0 w-full lg:static will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
                 <div
                   ref={(el) => {
                     discussionCardShellRefs.current[2] = el;
                   }}
-                  className="discussion-card-shell flex flex-col justify-center items-center bg-primary rounded h-auto min-h-[6rem] md:h-96 p-4 md:p-8"
+                  className="discussion-card-shell flex flex-col justify-center items-center bg-primary rounded w-96 h-96 p-4 lg:p-8"
                 >
-                  <p className="font-be-vietnam-pro text-primary text-sm sm:text-base md:text-2xl text-secondary text-center">
+                  <p className="font-be-vietnam-pro text-primary text-2xl text-secondary text-center">
                     Curtains for Zoosha!? K-dog and batboy jestermaxxing, caught
                     flipping a grunt, in police custody, bail set at $5000.
                   </p>
@@ -380,10 +390,10 @@ export default function Home() {
         ref={superpowerSectionRef}
         style={{ height: `calc(100vh * ${APP_USE_IMAGES.length + 1})` }}
       >
-        <div className="sticky top-0 h-screen bg-primary p-6 md:p-10 overflow-hidden">
-          <div className="w-full h-full max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-10">
-            <div className="w-full md:w-1/3 order-1 md:order-2 flex flex-col justify-center text-secondary">
-              <p className="font-eb-garamond text-4xl md:text-6xl mb-4 md:mb-6 text-center md:text-left">
+        <div className="sticky top-0 h-screen bg-primary p-6 lg:p-10 overflow-hidden">
+          <div className="w-full h-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 lg:gap-10">
+            <div className="w-full lg:w-1/3 order-1 lg:order-2 flex flex-col justify-center text-secondary">
+              <p className="font-eb-garamond text-4xl lg:text-6xl mb-4 lg:mb-6 text-center lg:text-left">
                 Meet Sumi.
               </p>
               <div className="relative min-h-[8rem]">
@@ -391,7 +401,7 @@ export default function Home() {
                   ref={(el) => {
                     superpowerParaRefs.current[0] = el;
                   }}
-                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
                   Serving up serialized classics of literature in an enticing
@@ -402,7 +412,7 @@ export default function Home() {
                   ref={(el) => {
                     superpowerParaRefs.current[1] = el;
                   }}
-                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
                   Thousands of chapters on launch, with more added all the time.
@@ -412,7 +422,7 @@ export default function Home() {
                   ref={(el) => {
                     superpowerParaRefs.current[2] = el;
                   }}
-                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
                   Read actively by annotating and highlighting your extracts.
@@ -421,7 +431,7 @@ export default function Home() {
                   ref={(el) => {
                     superpowerParaRefs.current[3] = el;
                   }}
-                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
                   Use AI-powered reading aids to boost comprehension and get the
@@ -433,7 +443,7 @@ export default function Home() {
                   ref={(el) => {
                     superpowerParaRefs.current[4] = el;
                   }}
-                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
                   Collect artworks from John Singer Sergeant, Sir John Everett
@@ -443,7 +453,7 @@ export default function Home() {
                   ref={(el) => {
                     superpowerParaRefs.current[5] = el;
                   }}
-                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
                   Login daily and track your reader streaks on the global
@@ -453,7 +463,7 @@ export default function Home() {
                   ref={(el) => {
                     superpowerParaRefs.current[6] = el;
                   }}
-                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
                   Receive new instalments daily, every few days, weekly, or
@@ -463,7 +473,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="w-full md:w-2/3 order-2 md:order-1 relative h-[56vh] md:h-full">
+            <div className="w-full lg:w-2/3 order-2 lg:order-1 relative h-[56vh] lg:h-full">
               {APP_USE_IMAGES.map((imageSrc, i) => (
                 <div
                   key={imageSrc}
@@ -497,47 +507,56 @@ export default function Home() {
           <Image
             src="/black-app-store.svg"
             alt="App Store"
-            width={210}
-            height={70}
-            className="w-[170px] h-auto md:w-[210px] mb-4 md:mb-8"
+            width={150}
+            height={50}
+            className="mb-6"
           />
         </a>
         <a
           href=""
-          className="font-zen-maru-gothic text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8"
+          className="font-zen-maru-gothic text-2xl lg:text-3xl text-center text-primary mb-6 lg:mb-8"
         >
           ひと休みしましょう
         </a>
         <a
           href=""
-          className="font-be-vietnam-pro text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8"
+          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-6 lg:mb-8"
         >
           Hitoyasumi Shimashou.
         </a>
         <a
           href=""
-          className="font-eb-garamond text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8"
+          className="font-eb-garamond text-3xl md:text-4xl lg:text-6xl text-center text-primary mb-6 lg:mb-8"
         >
           Take a short rest. Reboot your mind. Reclaim your focus.
         </a>
         <a
           href=""
-          className="font-be-vietnam-pro text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8"
+          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-6 lg:mb-8"
         >
           support@sumi.club
         </a>
         <a
+          href="https://sumidiaries.substack.com/"
+          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary underline mb-6 lg:mb-8"
+        >
+          Substack
+        </a>
+        <a
           href="https://app.termly.io/policy-viewer/policy.html?policyUUID=091a3906-219a-4a01-8730-b4e68871892d"
-          className="font-be-vietnam-pro text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8 underline"
+          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-4 lg:mb-8 underline"
         >
           Privacy Policy
         </a>
         <a
           href="https://app.termly.io/policy-viewer/policy.html?policyUUID=241c1655-5932-4940-8aff-b157a703d9c6"
-          className="font-be-vietnam-pro text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8 underline"
+          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-4 lg:mb-8 underline"
         >
           Terms & Conditions
         </a>
+        <p className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-4 lg:mb-8">
+          (c) 2026 Jay Lacey. All rights reserved.
+        </p>
       </div>
     </div>
   );
