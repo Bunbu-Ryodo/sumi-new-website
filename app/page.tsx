@@ -468,9 +468,10 @@ export default function Home() {
                   className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
-                  Receive new instalments daily, every few days, weekly, or
-                  bi-weekly. No-ads and no sharing your data with third parties.
-                  Core reading features will remain free.
+                  Subscribe to a series and receive new instalments daily, every
+                  few days, weekly, or bi-weekly. No-ads and no sharing your
+                  data with third parties. Core reading features will remain
+                  free.
                 </p>
               </div>
             </div>
