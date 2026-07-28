@@ -17,6 +17,8 @@ const APP_USE_IMAGES = [
   "/appuse9.jpeg",
 ];
 const APP_USE_HOLD_RATIO = 0.72;
+// Maps each app screen frame index to a paragraph index (0-based)
+const FRAME_TO_PARA = [0, 1, 2, 2, 3, 3, 4, 5, 6];
 
 export default function Home() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -27,6 +29,7 @@ export default function Home() {
   const discussionCardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const discussionCardShellRefs = useRef<Array<HTMLDivElement | null>>([]);
   const superpowerImageRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const superpowerParaRefs = useRef<Array<HTMLParagraphElement | null>>([]);
   const discussionBuzzedRef = useRef<boolean[]>(
     Array.from({ length: DISCUSSION_CARD_COUNT }, () => false),
   );
@@ -135,6 +138,25 @@ export default function Home() {
 
         imageFrame.style.opacity = String(finalOpacity);
       });
+
+      const activePara = FRAME_TO_PARA[frameIndex];
+      const nextFrameIndex = Math.min(
+        frameIndex + 1,
+        APP_USE_IMAGES.length - 1,
+      );
+      const nextPara = FRAME_TO_PARA[nextFrameIndex];
+
+      superpowerParaRefs.current.forEach((para, index) => {
+        if (!para) return;
+        let opacity = 0;
+        if (activePara === nextPara) {
+          opacity = index === activePara ? 1 : 0;
+        } else {
+          if (index === activePara) opacity = 1 - fadeProgress;
+          else if (index === nextPara) opacity = fadeProgress;
+        }
+        para.style.opacity = String(opacity * reveal);
+      });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -155,7 +177,7 @@ export default function Home() {
           {/* Left column — stays fixed while items scroll */}
           <div className="flex flex-col justify-center items-center text-center md:items-start md:text-left w-full md:w-1/2 h-1/3 md:h-full p-8 md:p-8">
             <p className="font-eb-garamond text-6xl md:text-8xl mb-8">Sumi</p>
-            <p className="font-eb-garamond text-2xl md:text-3xl mb-8">
+            <p className="font-be-vietnam-pro text-2xl md:text-3xl mb-8">
               Your new feed, flooded with the Great Books
             </p>
             <a href="https://apps.apple.com/gb/app/sumi-scroll-smarter/id6779934781">
@@ -164,6 +186,7 @@ export default function Home() {
                 alt="App Store"
                 width={210}
                 height={70}
+                className="w-[170px] h-auto md:w-[210px]"
               />
             </a>
           </div>
@@ -200,19 +223,19 @@ export default function Home() {
         ref={discussionSectionRef}
         style={{ height: `calc(100vh * ${DISCUSSION_CARD_COUNT + 1})` }}
       >
-        <div className="discussion-sticky sticky top-0 h-screen bg-secondary flex w-full items-center justify-center p-8 overflow-hidden">
+        <div className="discussion-sticky sticky top-0 h-screen bg-secondary flex w-full items-start md:items-center justify-center p-4 md:p-8 overflow-y-auto md:overflow-hidden">
           <div className="w-full max-w-7xl flex flex-col items-center">
-            <p className="discussion-heading font-eb-garamond mb-8 text-4xl md:text-6xl text-center text-primary">
+            <p className="discussion-heading font-eb-garamond mb-3 md:mb-8 text-2xl md:text-6xl text-center text-primary">
               How many novels worth of inane and vacuous text have you
               doom-scrolled this week?
             </p>
 
-            <div className="w-full flex flex-col md:flex-row items-center md:items-start justify-center gap-6 md:gap-8">
+            <div className="w-full flex flex-col md:flex-row items-center md:items-start justify-center gap-3 md:gap-8">
               <div
                 ref={(el) => {
                   discussionCardRefs.current[0] = el;
                 }}
-                className="w-full max-w-md mb-4 will-change-transform"
+                className="w-full max-w-md mb-2 md:mb-4 will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
                 <div
@@ -223,8 +246,8 @@ export default function Home() {
                 >
                   <div className="flex flex-row items-center">
                     <div className="h-12 w-12 bg-secondary rounded-full m-4" />
-                    <p className="font-be-vietnam-pro mr-4">Shouty Person</p>
-                    <p className="font-be-vietnam-pro mr-4">@Shouty</p>
+                    <p className="font-be-vietnam-pro mr-4">VoteNow</p>
+                    <p className="font-be-vietnam-pro mr-4">@PlanetIsDoomed</p>
                     <p className="font-be-vietnam-pro">1h</p>
                   </div>
                   <p className="font-be-vietnam-pro m-4">
@@ -239,20 +262,20 @@ export default function Home() {
                 ref={(el) => {
                   discussionCardRefs.current[1] = el;
                 }}
-                className="w-full max-w-md mb-4 will-change-transform"
+                className="w-full max-w-md mb-2 md:mb-4 will-change-transform"
                 style={{ opacity: 0, transform: "translateY(60px)" }}
               >
                 <div
                   ref={(el) => {
                     discussionCardShellRefs.current[1] = el;
                   }}
-                  className="discussion-card-shell flex flex-col bg-secondary border border-primary rounded h-auto"
+                  className="discussion-card-shell flex flex-col bg-secondary border border-primary rounded h-auto p-2"
                 >
                   <div className="flex flex-col">
                     <div className="flex flex-row items-center">
                       <div className="h-8 w-8 bg-primary rounded-full m-4" />
                       <p className="font-be-vietnam-pro mr-4 text-primary">
-                        shouty1337
+                        Fluellen
                       </p>
                       <p className="font-be-vietnam-pro text-primary">29m</p>
                     </div>
@@ -270,7 +293,7 @@ export default function Home() {
                       <p className="font-be-vietnam-pro text-primary">15m</p>
                     </div>
                     <p className="font-be-vietnam-pro ml-12 text-primary">
-                      Avaunt! Blackguard! I say, avaunt!
+                      Avaunt, blackguard!
                     </p>
                     <p className="font-be-vietnam-pro ml-12 text-error">-25</p>
                   </div>
@@ -301,9 +324,9 @@ export default function Home() {
                   ref={(el) => {
                     discussionCardShellRefs.current[2] = el;
                   }}
-                  className="discussion-card-shell flex flex-col justify-center items-center bg-primary rounded h-96 p-8"
+                  className="discussion-card-shell flex flex-col justify-center items-center bg-primary rounded h-auto min-h-[6rem] md:h-96 p-4 md:p-8"
                 >
-                  <p className="font-be-vietnam-pro text-primary text-2xl text-secondary text-center">
+                  <p className="font-be-vietnam-pro text-primary text-lg md:text-2xl text-secondary text-center">
                     Curtains for Zoosha!? K-dog and batboy jestermaxxing, caught
                     flipping a grunt, in police custody, bail set at $5000.
                   </p>
@@ -321,17 +344,83 @@ export default function Home() {
           <div className="w-full h-full max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-10">
             <div className="w-full md:w-1/3 order-1 md:order-2 flex flex-col justify-center text-secondary">
               <p className="font-eb-garamond text-4xl md:text-6xl mb-4 md:mb-6 text-center md:text-left">
-                Your phone addiction is now your superpower
+                Meet Sumi.
               </p>
-              <p className="font-be-vietnam-pro text-base md:text-lg text-center md:text-left opacity-90 mb-2">
-                Meet Sumi. Serving up serialized classics of literature in an
-                enticing social media format. Trick yourself into becoming a
-                voracious reader. Get instalments delivered every day, every few
-                days, every week, bi-weekly. Make the most of your micro-breaks
-                with some guilt-free scrolling. Read actively by annotating your
-                extracts. Use AI-powered reading aids to boost comprehension and
-                get the most out of your reading.
-              </p>
+              <div className="relative min-h-[8rem]">
+                <p
+                  ref={(el) => {
+                    superpowerParaRefs.current[0] = el;
+                  }}
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  style={{ opacity: 0 }}
+                >
+                  Serving up serialized classics of literature in an enticing
+                  social media format. Trick yourself into becoming a voracious
+                  reader.
+                </p>
+                <p
+                  ref={(el) => {
+                    superpowerParaRefs.current[1] = el;
+                  }}
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  style={{ opacity: 0 }}
+                >
+                  Thousands of chapters on launch, with more added all the time.
+                  Never run out of content.
+                </p>
+                <p
+                  ref={(el) => {
+                    superpowerParaRefs.current[2] = el;
+                  }}
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  style={{ opacity: 0 }}
+                >
+                  Read actively by annotating and highlighting your extracts.
+                </p>
+                <p
+                  ref={(el) => {
+                    superpowerParaRefs.current[3] = el;
+                  }}
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  style={{ opacity: 0 }}
+                >
+                  Use AI-powered reading aids to boost comprehension and get the
+                  most out of your reading. You can generate a literary style
+                  chapter argument, a bullet point summary, or a synopsis for a
+                  novel. (Premium subscription required).
+                </p>
+                <p
+                  ref={(el) => {
+                    superpowerParaRefs.current[4] = el;
+                  }}
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  style={{ opacity: 0 }}
+                >
+                  Collect artworks from John Singer Sergeant, Sir John Everett
+                  Millais, Thomas Lawrence and more.
+                </p>
+                <p
+                  ref={(el) => {
+                    superpowerParaRefs.current[5] = el;
+                  }}
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  style={{ opacity: 0 }}
+                >
+                  Login daily and track your reader streaks on the global
+                  leaderboards.
+                </p>
+                <p
+                  ref={(el) => {
+                    superpowerParaRefs.current[6] = el;
+                  }}
+                  className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base md:text-lg text-center md:text-left"
+                  style={{ opacity: 0 }}
+                >
+                  Receive new instalments daily, every few days, weekly, or
+                  bi-weekly. No-ads and no sharing your data with third parties.
+                  Core reading features will remain free.
+                </p>
+              </div>
             </div>
 
             <div className="w-full md:w-2/3 order-2 md:order-1 relative h-[56vh] md:h-full">
@@ -362,6 +451,53 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex flex-col items-center justify-center p-8 bg-secondary h-screen">
+        <a href="https://apps.apple.com/gb/app/sumi-scroll-smarter/id6779934781">
+          <Image
+            src="/black-app-store.svg"
+            alt="App Store"
+            width={210}
+            height={70}
+            className="w-[170px] h-auto md:w-[210px] mb-4 md:mb-8"
+          />
+        </a>
+        <a
+          href=""
+          className="font-zen-maru-gothic text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8"
+        >
+          ひと休みしましょう
+        </a>
+        <a
+          href=""
+          className="font-be-vietnam-pro text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8"
+        >
+          Hitoyasumi Shimashou.
+        </a>
+        <a
+          href=""
+          className="font-eb-garamond text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8"
+        >
+          Take a short rest. Reboot your mind. Reclaim your focus.
+        </a>
+        <a
+          href=""
+          className="font-be-vietnam-pro text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8"
+        >
+          support@sumi.club
+        </a>
+        <a
+          href="https://app.termly.io/policy-viewer/policy.html?policyUUID=091a3906-219a-4a01-8730-b4e68871892d"
+          className="font-be-vietnam-pro text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8 underline"
+        >
+          Privacy Policy
+        </a>
+        <a
+          href="https://app.termly.io/policy-viewer/policy.html?policyUUID=241c1655-5932-4940-8aff-b157a703d9c6"
+          className="font-be-vietnam-pro text-2xl md:text-3xl text-center text-primary mb-4 md:mb-8 underline"
+        >
+          Terms & Conditions
+        </a>
       </div>
     </div>
   );

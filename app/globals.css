@@ -12,6 +12,7 @@
   --color-error: var(--error);
   --font-eb-garamond: var(--font-eb-garamond);
   --font-be-vietnam-pro: var(--font-be-vietnam-pro);
+  --font-zen-maru-gothic: var(--font-zen-maru-gothic);
 }
 
 @media (prefers-color-scheme: dark) {
