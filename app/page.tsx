@@ -406,7 +406,7 @@ export default function Home() {
                 >
                   Sumi presents you with a feed to scroll infinitely like your
                   other social media apps. But instead of "content" you might
-                  discover your next read. Pull down to refresh your feed, swipe
+                  discover your next read. Scroll, pull down to refresh, swipe
                   right to reject an extract, swipe left or tap to read more.
                 </p>
                 <p
@@ -439,7 +439,7 @@ export default function Home() {
                   Use AI-powered reading aids to boost comprehension and get the
                   most out of your reading. You can generate a literary style
                   chapter argument, a bullet point summary, or a synopsis for a
-                  novel. (Premium subscription required).
+                  novel.
                 </p>
                 <p
                   ref={(el) => {
@@ -448,8 +448,9 @@ export default function Home() {
                   className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
-                  Collect artworks from John Singer Sergeant, Sir John Everett
-                  Millais, Thomas Lawrence and more.
+                  Collect artworks inspired by and evocative of the texts from
+                  John Singer Sergeant, Sir John Everett Millais, John William
+                  Waterhouse, Ary Scheffer, Thomas Lawrence and more.
                 </p>
                 <p
                   ref={(el) => {
@@ -469,9 +470,10 @@ export default function Home() {
                   style={{ opacity: 0 }}
                 >
                   Subscribe to a series and receive new instalments daily, every
-                  few days, weekly, or bi-weekly. No-ads and no sharing your
-                  data with third parties. Core reading features will remain
-                  free.
+                  few days, weekly, or bi-weekly. No ads and no sharing your
+                  data with third parties. Some quality of life functions
+                  require premium subscription but core reading features will
+                  remain free.
                 </p>
               </div>
             </div>
