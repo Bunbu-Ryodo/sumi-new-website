@@ -248,9 +248,9 @@ export default function Home() {
               {ITEMS.map((item, i) => (
                 <div
                   key={i}
-                  className="h-[66.666667vh] lg:h-screen flex items-center justify-center"
+                  className="h-[66.666667vh] lg:h-screen flex items-center justify-center pb-[24px]"
                 >
-                  <div className="relative w-full h-full overflow-hidden bg-primary mb-[12px]">
+                  <div className="relative w-full h-full overflow-hidden bg-primary ">
                     <Image
                       src={item}
                       alt={`Feed preview ${i + 1}`}
