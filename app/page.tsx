@@ -250,7 +250,7 @@ export default function Home() {
                   key={i}
                   className="h-[66.666667vh] lg:h-screen flex items-center justify-center"
                 >
-                  <div className="relative w-full h-full overflow-hidden bg-primary">
+                  <div className="relative w-full h-full overflow-hidden bg-primary mb-[12px]">
                     <Image
                       src={item}
                       alt={`Feed preview ${i + 1}`}
