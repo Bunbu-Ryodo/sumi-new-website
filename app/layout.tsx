@@ -15,7 +15,7 @@ const zenMaruGothic = Zen_Maru_Gothic({
 
 const beVietnamPro = Be_Vietnam_Pro({
   variable: "--font-be-vietnam-pro",
-  weight: ["400", "700"],
+  weight: ["200"],
   subsets: ["latin"],
 });
 
