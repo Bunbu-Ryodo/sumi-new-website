@@ -517,6 +517,16 @@ export default function Home() {
             className="mb-6"
           />
         </a>
+        <div className="flex flex-row align-center justify-center items-center justify-center mb-6">
+          <a href="https://sumidiaries.substack.com/">
+            <Image src="/substack.png" alt="Substack" width={50} height={50} />
+          </a>
+          <a href="https://sumidiaries.substack.com">
+            <p className="font-eb-garamond text-2xl lg:text-3xl text-primary text-center">
+              Sumi Diaries
+            </p>
+          </a>
+        </div>
         <a
           href=""
           className="font-zen-maru-gothic text-2xl lg:text-3xl text-center text-primary mb-6 lg:mb-8"
@@ -525,7 +535,7 @@ export default function Home() {
         </a>
         <a
           href=""
-          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-6 lg:mb-8"
+          className="font-zen-maru-gothic text-2xl lg:text-3xl text-center text-primary mb-6 lg:mb-8"
         >
           Hitoyasumi Shimashou.
         </a>
@@ -533,35 +543,49 @@ export default function Home() {
           href=""
           className="font-eb-garamond text-3xl md:text-4xl lg:text-6xl text-center text-primary mb-6 lg:mb-8"
         >
-          Take a short rest. Reboot your mind. Reclaim your focus.
+          Take a short rest. Reclaim your focus.
         </a>
-        <a
-          href=""
-          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-6 lg:mb-8"
-        >
-          support@sumi.club
-        </a>
-        <a
-          href="https://sumidiaries.substack.com/"
-          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary underline mb-6 lg:mb-8"
-        >
-          Substack
-        </a>
-        <a
-          href="https://app.termly.io/policy-viewer/policy.html?policyUUID=091a3906-219a-4a01-8730-b4e68871892d"
-          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-4 lg:mb-8 underline"
-        >
-          Privacy Policy
-        </a>
-        <a
-          href="https://app.termly.io/policy-viewer/policy.html?policyUUID=241c1655-5932-4940-8aff-b157a703d9c6"
-          className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-4 lg:mb-8 underline"
-        >
-          Terms & Conditions
-        </a>
-        <p className="font-be-vietnam-pro text-2xl lg:text-3xl text-center text-primary mb-4 lg:mb-8">
-          (c) 2026 Jay Lacey. All rights reserved.
-        </p>
+      </div>
+      <div className="flex flex-row w-full justify-center lg:gap-10 p-2 bg-primary">
+        <div className="flex flex-col p-2 mr-2">
+          <div className="flex items-start justify-start w-[25px] h-[36px] p-[2.5px] bg-secondary rounded-[2px]">
+            <div className="w-[6px] h-[15px] bg-primary rounded-[1px]" />
+          </div>
+        </div>
+        <div className="flex flex-col items-start p-2">
+          <a
+            href="mailto:support@sumi.club"
+            className="font-be-vietnam-pro text-[10px] md:text-[12px] text-secondary mb-[2px] underline"
+          >
+            support@sumi.club
+          </a>
+          <p className="font-be-vietnam-pro text-secondary text-[10px] md:text-[12px] ">
+            Sumi
+            <br />
+            66 Paul Street
+            <br />
+            London
+            <br />
+            EC2A 4NA
+          </p>
+        </div>
+        <div className="flex flex-col bg-primary items-start p-2">
+          <a
+            href="https://app.termly.io/policy-viewer/policy.html?policyUUID=091a3906-219a-4a01-8730-b4e68871892d"
+            className="font-be-vietnam-pro text-[10px] md:text-[12px] text-secondary underline mb-[2px]"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="https://app.termly.io/policy-viewer/policy.html?policyUUID=241c1655-5932-4940-8aff-b157a703d9c6"
+            className="font-be-vietnam-pro text-[10px] md:text-[12px] text-secondary underline mb-[2px]"
+          >
+            Terms & Conditions
+          </a>
+          <p className="font-be-vietnam-pro text-[10px] md:text-[12px] text-secondary">
+            (c) 2026 Jay Lacey. All rights reserved.
+          </p>
+        </div>
       </div>
     </div>
   );
