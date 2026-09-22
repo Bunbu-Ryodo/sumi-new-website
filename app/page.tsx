@@ -6,19 +6,18 @@ import { useEffect, useRef } from "react";
 const ITEMS = ["/feed2.jpeg", "/feed3.jpeg", "/feed4.jpeg"];
 const DISCUSSION_CARD_COUNT = 3;
 const APP_USE_IMAGES = [
-  "/appuse1.jpeg",
-  "/appuse2.jpeg",
-  "/appuse3.jpeg",
-  "/appuse4.jpeg",
-  "/appuse5.jpeg",
-  "/appuse6.jpeg",
-  "/appuse7.jpeg",
-  "/appuse8.jpeg",
-  "/appuse9.jpeg",
+  "/appuse1.png",
+  "/appuse2.png",
+  "/appuse3.png",
+  "/appuse4.png",
+  "/appuse5.png",
+  "/appuse6.png",
+  "/appuse7.png",
+  "/appuse8.png",
 ];
 const APP_USE_HOLD_RATIO = 0.72;
 // Maps each app screen frame index to a paragraph index (0-based)
-const FRAME_TO_PARA = [0, 1, 2, 2, 3, 3, 4, 5, 6];
+const FRAME_TO_PARA = [0, 1, 2, 2, 3, 4, 5, 6];
 
 export default function Home() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -405,7 +404,7 @@ export default function Home() {
                   style={{ opacity: 0 }}
                 >
                   Sumi presents you with a feed to scroll infinitely like your
-                  other social media apps. But instead of "content" you might
+                  other social media apps. But instead of "content", you might
                   discover your next read. Scroll, pull down to refresh, swipe
                   right to reject an extract, swipe left or tap to read more.
                 </p>
@@ -417,8 +416,8 @@ export default function Home() {
                   style={{ opacity: 0 }}
                 >
                   Thousands of chapters on launch, with more added all the time.
-                  Henry James, Joseph Conrad, George Eliot, Dostoevsky, Tolstoy,
-                  Stendahl and Balzac...
+                  Henry James, Joseph Conrad, George Eliot, Jane Austen,
+                  Dostoevsky, Tolstoy, Stendahl ...
                 </p>
                 <p
                   ref={(el) => {
@@ -427,7 +426,7 @@ export default function Home() {
                   className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
-                  Read actively by annotating and highlighting your extracts.
+                  Read actively by annotating and highlighting your extracts ...
                 </p>
                 <p
                   ref={(el) => {
@@ -436,10 +435,9 @@ export default function Home() {
                   className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
-                  Use AI-powered reading aids to boost comprehension and get the
-                  most out of your reading. You can generate a literary style
-                  chapter argument, a bullet point summary, or a synopsis for a
-                  novel.
+                  ... and use AI-powered reading aids to boost comprehension and
+                  get the most out of your reading. Highlight obscure references
+                  and tap the button to generate scholarly explanatory notes.
                 </p>
                 <p
                   ref={(el) => {
@@ -459,8 +457,11 @@ export default function Home() {
                   className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
-                  Login daily and track your reader streaks on the global
-                  leaderboards.
+                  Subscribe to a series and receive new instalments daily, every
+                  few days, weekly, or bi-weekly. No ads and no sharing your
+                  data with third parties. Some quality of life functions
+                  require premium subscription but core reading features will
+                  remain free.
                 </p>
                 <p
                   ref={(el) => {
@@ -469,11 +470,8 @@ export default function Home() {
                   className="absolute top-0 left-0 right-0 font-be-vietnam-pro text-base lg:text-lg text-center lg:text-left"
                   style={{ opacity: 0 }}
                 >
-                  Subscribe to a series and receive new instalments daily, every
-                  few days, weekly, or bi-weekly. No ads and no sharing your
-                  data with third parties. Some quality of life functions
-                  require premium subscription but core reading features will
-                  remain free.
+                  Write your own critical appraisals of texts and compete with a
+                  community of readers for the best rank on the leaderboard.
                 </p>
               </div>
             </div>
