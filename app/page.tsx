@@ -447,8 +447,8 @@ export default function Home() {
                   style={{ opacity: 0 }}
                 >
                   Collect artworks inspired by and evocative of the texts from
-                  John Singer Sergeant, Sir John Everett Millais, John William
-                  Waterhouse, Ary Scheffer, Thomas Lawrence and more.
+                  John Singer Sergeant, engravings by Gustave Doré, and antique
+                  first edition covers and title pages.
                 </p>
                 <p
                   ref={(el) => {
