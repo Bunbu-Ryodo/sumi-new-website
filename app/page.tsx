@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 const ITEMS = ["/feed2.jpeg", "/feed3.jpeg", "/feed4.jpeg"];
@@ -568,18 +569,18 @@ export default function Home() {
           </p>
         </div>
         <div className="flex flex-col bg-primary items-start p-2">
-          <a
-            href="https://app.termly.io/policy-viewer/policy.html?policyUUID=091a3906-219a-4a01-8730-b4e68871892d"
+          <Link
+            href="/privacy-policy"
             className="font-be-vietnam-pro text-[10px] md:text-[12px] text-secondary underline mb-[2px]"
           >
             Privacy Policy
-          </a>
-          <a
-            href="https://app.termly.io/policy-viewer/policy.html?policyUUID=241c1655-5932-4940-8aff-b157a703d9c6"
+          </Link>
+          <Link
+            href="/terms-and-conditions"
             className="font-be-vietnam-pro text-[10px] md:text-[12px] text-secondary underline mb-[2px]"
           >
             Terms & Conditions
-          </a>
+          </Link>
           <p className="font-be-vietnam-pro text-[10px] md:text-[12px] text-secondary">
             (c) 2026 Jay Lacey. All rights reserved.
           </p>
